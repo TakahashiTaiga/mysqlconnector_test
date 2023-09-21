@@ -1,25 +1,30 @@
+import asyncio
 from pyhocon import ConfigFactory
 from execute_sqls import execute_sqls
 
-if __name__=='__main__':
-
-  # read configs
+async def main_func():
+   # read configs
   print('open config')
   conf = ConfigFactory.parse_file('./mysql_config.conf')
   db = conf['db']
 
+  print(db)
   # create instance
   print('create instance')
   exec_sqls = execute_sqls()
   # connect to MySQL
   print('connect to mysql')
-  exec_sqls.connectToMySQL()
+  asyncio.gather(execute_sqls.connectToMySQL())
   # execute create tables by the order based on execute_sqls.conf
   print('use db')
-  execute_sqls.useDB(db)
+  asyncio.gather(execute_sqls.useDB(db))
   print('insert data')
-  execute_sqls.insertData()
+  asyncio.gather(execute_sqls.insertData())
   # close connection to MySQL
   print('close connection')
   exec_sqls.close()
+
+if __name__=='__main__':
+  asyncio.run(main_func())
+ 
   
