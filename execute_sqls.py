@@ -2,7 +2,6 @@ import os
 from dotenv import load_dotenv
 import mysql.connector
 from mysql.connector import errorcode
-import asyncio
 
 
 """
@@ -43,7 +42,7 @@ class execute_sqls:
     self.mysql_root_password = os.getenv('MYSQL_ROOT_PASSWORD')
     self.mysql_port = os.getenv('DB_PORT')
 
-  async def connectToMySQL(self):
+  def connectToMySQL(self):
     """
       no arguments required
       create cnx and cursor
@@ -52,7 +51,7 @@ class execute_sqls:
     print('connectToMySQL')
     try:
       # create connect
-      self.cnx = await mysql.connector.connect(
+      self.cnx = mysql.connector.connect(
         user=self.mysql_user,
         password=self.mysql_root_password,
         port=self.mysql_port)
@@ -68,7 +67,7 @@ class execute_sqls:
       else:
         print(err)
 
-  async def useDB(self, db):
+  def useDB(self, db):
     """
       argument: 
         db  database name for use command
@@ -80,14 +79,14 @@ class execute_sqls:
       # create use command
       use_db = "USE {};".format(db)
       # execute use command
-      await self.cursor.execute(use_db)
+      self.cursor.execute(use_db)
     # throw error
     except mysql.connector.Error as err:
       print(err)
       exit(1)
 
 
-  async def openSQLFile(self):
+  def openSQLFile(self):
     """
       argument:
         db    database name
@@ -107,7 +106,7 @@ class execute_sqls:
       # return file contents
       return create_table
   
-  async def insertData(self):
+  def insertData(self):
     """
       arguments:
         db    create table in this db
@@ -121,7 +120,7 @@ class execute_sqls:
       # get sql file contents
       insert_data = self.openSQLFile()
       # execute create table
-      await self.cursor.execute(insert_data)
+      self.cursor.execute(insert_data)
     # throw error
     except mysql.connector.Error as err:
       print("Failed creating database: {}".format(err))
