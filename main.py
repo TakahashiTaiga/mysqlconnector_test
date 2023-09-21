@@ -1,6 +1,5 @@
 from pyhocon import ConfigFactory
 from execute_sqls import execute_sqls
-import time
 
 if __name__=='__main__':
   # read configs
@@ -13,10 +12,10 @@ if __name__=='__main__':
   exec_sqls = execute_sqls()
   # connect to MySQL
   print('connect to mysql')
-  execute_sqls.connectToMySQL()
+  exec_sqls.connectToMySQL()
   # execute create tables by the order based on execute_sqls.conf
   print('insert data')
-  execute_sqls.insertData()
+  exec_sqls.insertData()
   # close connection to MySQL
   print('close connection')
   exec_sqls.close()
