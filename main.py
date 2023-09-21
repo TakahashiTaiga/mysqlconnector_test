@@ -1,4 +1,3 @@
-import asyncio
 from pyhocon import ConfigFactory
 from execute_sqls import execute_sqls
 import time
@@ -8,10 +7,7 @@ if __name__=='__main__':
   print('open config')
   conf = ConfigFactory.parse_file('./mysql_config.conf')
   db = conf['db']
-
-  time.sleep(1)
   
-  print(db)
   # create instance
   print('create instance')
   exec_sqls = execute_sqls()
@@ -19,8 +15,6 @@ if __name__=='__main__':
   print('connect to mysql')
   execute_sqls.connectToMySQL()
   # execute create tables by the order based on execute_sqls.conf
-  print('use db')
-  execute_sqls.useDB(db)
   print('insert data')
   execute_sqls.insertData()
   # close connection to MySQL

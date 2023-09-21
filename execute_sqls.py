@@ -41,6 +41,7 @@ class execute_sqls:
     self.mysql_user = os.getenv('MYSQL_USER')
     self.mysql_root_password = os.getenv('MYSQL_ROOT_PASSWORD')
     self.mysql_port = os.getenv('DB_PORT')
+    self.mysql_db = os.getenv('DB')
 
   def connectToMySQL(self):
     """
@@ -54,7 +55,8 @@ class execute_sqls:
       self.cnx = mysql.connector.connect(
         user=self.mysql_user,
         password=self.mysql_root_password,
-        port=self.mysql_port)
+        port=self.mysql_port,
+        database=self.mysql_db)
       # create cursor
       self.cursor = self.cnx.cursor()
     
@@ -66,45 +68,6 @@ class execute_sqls:
         print("Database does not exist")
       else:
         print(err)
-
-  def useDB(self, db):
-    """
-      argument: 
-        db  database name for use command
-
-      create and execute use command
-    """
-    print('useDB')
-    try:
-      # create use command
-      use_db = "USE {};".format(db)
-      # execute use command
-      self.cursor.execute(use_db)
-    # throw error
-    except mysql.connector.Error as err:
-      print(err)
-      exit(1)
-
-
-  def openSQLFile(self):
-    """
-      argument:
-        db    database name
-        table table name
-
-      open sql file of specified db and table
-      retrun the file
-    """
-    print('openSqlFile')
-    # create file path
-    path = "insert_testdata.sql"
-    # opne file
-    with open(path) as f:
-      create_table = f.read()
-      # file close before return
-      f.close()
-      # return file contents
-      return create_table
   
   def insertData(self):
     """
@@ -118,7 +81,7 @@ class execute_sqls:
     print('insertData')
     try:
       # get sql file contents
-      insert_data = self.openSQLFile()
+      insert_data = "insert into users (user_name, email_address, user_password) values ('takahashi', 'takahashi@gmail.com', 'takahashitaiga');"
       # execute create table
       self.cursor.execute(insert_data)
     # throw error
