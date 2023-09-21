@@ -3,8 +3,8 @@ from pyhocon import ConfigFactory
 from execute_sqls import execute_sqls
 import time
 
-async def main_func():
-   # read configs
+if __name__=='__main__':
+  # read configs
   print('open config')
   conf = ConfigFactory.parse_file('./mysql_config.conf')
   db = conf['db']
@@ -26,8 +26,3 @@ async def main_func():
   # close connection to MySQL
   print('close connection')
   exec_sqls.close()
-
-if __name__=='__main__':
-  asyncio.run(main_func())
- 
-  
